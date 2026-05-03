@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="card">
+    <h1>Login</h1>
+    <form id="form">
+      <label>Username</label>
+      <input type="text" id="username" autocomplete="username" required />
+      <label>Password</label>
+      <input type="password" id="password" autocomplete="current-password" required />
+      <p id="error" class="error hidden"></p>
+      <button type="submit" class="btn">Login</button>
+    </form>
+    <p class="alt-link">No account yet? <a href="register.html">Register</a></p>
+  </div>
+  <script>
+    document.getElementById('form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const err = document.getElementById('error');
+      err.classList.add('hidden');
+
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: document.getElementById('username').value,
+          password: document.getElementById('password').value
+        })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        window.location.href = `/home/${data.username}`;
+      } else {
+        err.textContent = data.error;
+        err.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
