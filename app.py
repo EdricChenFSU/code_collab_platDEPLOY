@@ -130,6 +130,9 @@ def build_file_tree(files_dir, relative_dir=''):
 
 def project_files_dir(username, project_name):
     """Return the filesystem path to a project's files directory."""
+    # verify the arguments passed in
+    if not PROJECT_NAME_RE.match(username) or not PROJECT_NAME_RE.match(project_name):
+        raise ValueError('Invalid username or project name.')
     # extra wrap with os.path.realpath() for protection
     return os.path.realpath(os.path.join(ACCOUNTS_DIR, username, 'projects', project_name, 'files'))
 
