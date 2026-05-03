@@ -14,6 +14,11 @@ import os
 
 app = Flask(__name__, static_folder='public')
 app.secret_key = os.environ.get('SECRET_KEY', 'change-this-in-production')
+# config app for additional security
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SECURE'] = os.environ.get('SECRET_KEY') is not None
+
 sock = Sock(app)
 
 DATA_DIR = os.environ.get('DATA_DIR', '.')
