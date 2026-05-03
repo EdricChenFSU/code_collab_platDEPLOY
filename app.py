@@ -99,7 +99,11 @@ def build_file_tree(files_dir, relative_dir=''):
     Folders include a 'children' list. Files are sorted before folders at each level.
     """
     tree = []
-    current_dir = os.path.join(files_dir, relative_dir)
+    # check after joining paths
+    safe_root = os.path.realpath(files_dir)
+    current_dir = os.path.realpath(os.path.join(files_dir, relative_dir))
+    if not (current_dir == safe_root or current_dir.startswith(safe_root + os.sep)):
+        return []
     entries = sorted(
         os.listdir(current_dir),
         key=lambda entry: (
