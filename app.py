@@ -2115,6 +2115,9 @@ def collab_download_item(owner, project_name, item_path):
     """Download a collaborated project file directly, or a folder as a zip archive."""
     if 'username' not in session:
         return jsonify(error='Not logged in.'), 401
+    # additional validation on owner and project_name
+    if not PROJECT_NAME_RE.match(owner) or not PROJECT_NAME_RE.match(project_name):
+        return jsonify(error='Project not found.'), 404
     if not has_collab_access(session['username'], owner, project_name):
         return jsonify(error='Forbidden.'), 403
     return download_project_path(project_files_dir(owner, project_name), item_path, archive_name=project_name)
