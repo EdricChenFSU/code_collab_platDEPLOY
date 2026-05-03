@@ -130,8 +130,8 @@ def build_file_tree(files_dir, relative_dir=''):
 
 def project_files_dir(username, project_name):
     """Return the filesystem path to a project's files directory."""
-    return os.path.join(ACCOUNTS_DIR, username, 'projects', project_name, 'files')
-
+    # extra wrap with os.path.realpath() for protection
+    return os.path.realpath(os.path.join(ACCOUNTS_DIR, username, 'projects', project_name, 'files'))
 
 def persist_project_file(owner, project_name, file_path, content):
     """Persist saved editor content to disk."""
