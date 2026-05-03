@@ -2054,6 +2054,9 @@ def collab_get_file(owner, project_name, file_path):
     """Get file content from a collaborated project."""
     if 'username' not in session:
         return jsonify(error='Not logged in.'), 401
+    # validate owner and project name
+    if not PROJECT_NAME_RE.match(owner) or not PROJECT_NAME_RE.match(project_name):
+        return jsonify(error='Project not found.'), 404
     if not has_collab_access(session['username'], owner, project_name):
         return jsonify(error='Forbidden.'), 403
     if not is_safe_file_path(file_path):
@@ -2108,6 +2111,9 @@ def collab_download_root(owner, project_name):
     """Download the whole collaborated project as a zip archive."""
     if 'username' not in session:
         return jsonify(error='Not logged in.'), 401
+    # validate owner and project name
+    if not PROJECT_NAME_RE.match(owner) or not PROJECT_NAME_RE.match(project_name):
+        return jsonify(error='Project not found.'), 404
     if not has_collab_access(session['username'], owner, project_name):
         return jsonify(error='Forbidden.'), 403
     return download_project_path(project_files_dir(owner, project_name), archive_name=project_name)
@@ -2168,6 +2174,9 @@ def collab_create_folder(owner, project_name, folder_path):
     """Create a folder in a collaborated project."""
     if 'username' not in session:
         return jsonify(error='Not logged in.'), 401
+    # validate owner and project name
+    if not PROJECT_NAME_RE.match(owner) or not PROJECT_NAME_RE.match(project_name):
+        return jsonify(error='Project not found.'), 404
     if not has_collab_access(session['username'], owner, project_name):
         return jsonify(error='Forbidden.'), 403
     if not is_safe_file_path(folder_path):
