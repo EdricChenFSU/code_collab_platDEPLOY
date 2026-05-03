@@ -1549,7 +1549,7 @@ def collab_project(owner, project_name):
         return redirect('/login.html')
     if 'username' not in session:
         return redirect('/login.html')
-    if not PROJECT_NAME_RE.match(project_name):
+    if not PROJECT_NAME_RE.match(owner) or not PROJECT_NAME_RE.match(project_name):
         return 'Not found', 404
     collab_user = session['username']
     if not has_collab_access(collab_user, owner, project_name):
